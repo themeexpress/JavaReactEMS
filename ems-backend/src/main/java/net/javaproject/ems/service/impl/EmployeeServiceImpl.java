@@ -1,5 +1,8 @@
 package net.javaproject.ems.service.impl;
 
+import java.util.List;
+import java.util.stream.Collector;
+
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
@@ -29,5 +32,12 @@ public class EmployeeServiceImpl implements EmployeeService{
             .orElseThrow(() -> 
             new ResourceNotFoundException("Employee is not exist with given id " + employeeId));
         return EmployeeMapper.mapToEmployeeDto(employee);
+    }
+
+    @Override
+    public List<EmployeeDto> getAllEmployee() {
+        List<Employee> employees = employeeRepository.findAll();
+        return employees.stream().map(( employee) -> EmployeeMapper.mapToEmployeeDto((employee)))
+            .toList();
     }
 }
